@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExtendSelect Demo</title>
+    <link rel="stylesheet" href="extend-select.css">
+    <style>
+        :root {
+            --bs-blue: #0d6efd;
+            --bs-indigo: #6610f2;
+            --bs-purple: #6f42c1;
+            --bs-pink: #d63384;
+            --bs-red: #dc3545;
+            --bs-orange: #fd7e14;
+            --bs-yellow: #ffc107;
+            --bs-green: #198754;
+            --bs-teal: #20c997;
+            --bs-cyan: #0dcaf0;
+            --bs-white: #fff;
+            --bs-gray: #6c757d;
+            --bs-gray-dark: #343a40;
+            --bs-gray-100: #f8f9fa;
+            --bs-gray-200: #e9ecef;
+            --bs-gray-300: #dee2e6;
+            --bs-gray-400: #ced4da;
+            --bs-gray-500: #adb5bd;
+            --bs-gray-600: #6c757d;
+            --bs-gray-700: #495057;
+            --bs-gray-800: #343a40;
+            --bs-gray-900: #212529;
+            --bs-primary: #0d6efd;
+            --bs-secondary: #6c757d;
+            --bs-success: #198754;
+            --bs-info: #0dcaf0;
+            --bs-warning: #ffc107;
+            --bs-danger: #dc3545;
+            --bs-light: #f8f9fa;
+            --bs-dark: #212529;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--bs-gray-900);
+            background-color: var(--bs-gray-100);
+            margin: 0;
+            padding: 1.5rem;
+        }
+        
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 0.75rem;
+        }
+        
+        .card {
+            background: var(--bs-white);
+            border: 1px solid var(--bs-gray-300);
+            border-radius: 0.375rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .card-header {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 0;
+            background-color: var(--bs-gray-100);
+            border-bottom: 1px solid var(--bs-gray-300);
+            border-top-left-radius: calc(0.375rem - 1px);
+            border-top-right-radius: calc(0.375rem - 1px);
+        }
+        
+        .card-body {
+            padding: 1.25rem;
+        }
+        
+        .card-title {
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--bs-gray-900);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--bs-gray-700);
+            display: block;
+        }
+        
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--bs-gray-900);
+            background-color: var(--bs-white);
+            background-image: none;
+            border: 1px solid var(--bs-gray-400);
+            border-radius: 0.375rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .form-control:focus {
+            color: var(--bs-gray-900);
+            background-color: var(--bs-white);
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .alert {
+            position: relative;
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.375rem;
+        }
+        
+        .alert-info {
+            color: #055160;
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+        }
+        
+        .output {
+            background-color: var(--bs-gray-100);
+            border: 1px solid var(--bs-gray-300);
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.875rem;
+            color: var(--bs-gray-800);
+            margin-top: 0.75rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--bs-gray-900);
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 0.375rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        
+        .btn-primary {
+            color: #fff;
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+        
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.375rem;
+        }
+        
+        .badge-primary {
+            background-color: var(--bs-primary);
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -0.75rem;
+            margin-left: -0.75rem;
+        }
+        
+        .col-md-6 {
+            flex: 0 0 auto;
+            width: 50%;
+            padding-right: 0.75rem;
+            padding-left: 0.75rem;
+        }
+        
+        @media (max-width: 767.98px) {
+            .col-md-6 {
+                width: 100%;
+            }
+        }
+        
+        h1 {
+            color: var(--bs-gray-900);
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+        
+        .lead {
+            font-size: 1.25rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            color: var(--bs-gray-600);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="display-4 fw-light">ExtendSelect</h1>
+            <p class="lead">HTMLのselectを拡張し、検索機能と複数選択機能を追加したBootstrapライクなカスタムセレクトボックス</p>
+            <div class="alert alert-info">
+                <strong>機能:</strong> 文字検索、複数選択、カスタムスタイリング、キーボードナビゲーション
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            基本的な単一選択
+                            <span class="badge badge-primary ms-2">検索機能付き</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="basic-select" class="form-label">好きな果物を選択してください:</label>
+                            <select id="basic-select" class="form-control">
+                                <option value="">選択してください</option>
+                                <option value="apple">りんご</option>
+                                <option value="banana">バナナ</option>
+                                <option value="orange">オレンジ</option>
+                                <option value="grape">ぶどう</option>
+                                <option value="strawberry">いちご</option>
+                                <option value="peach">もも</option>
+                                <option value="melon">メロン</option>
+                                <option value="watermelon">すいか</option>
+                                <option value="cherry">さくらんぼ</option>
+                                <option value="kiwi">キウイ</option>
+                            </select>
+                            <div class="output" id="basic-output">選択値: なし</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            複数選択
+                            <span class="badge badge-primary ms-2">検索機能付き</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="multiple-select" class="form-label">好きなプログラミング言語を選択してください:</label>
+                            <select id="multiple-select" class="form-control" multiple>
+                                <option value="javascript">JavaScript</option>
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                                <option value="csharp">C#</option>
+                                <option value="cpp">C++</option>
+                                <option value="php">PHP</option>
+                                <option value="ruby">Ruby</option>
+                                <option value="go">Go</option>
+                                <option value="rust">Rust</option>
+                                <option value="typescript">TypeScript</option>
+                                <option value="kotlin">Kotlin</option>
+                                <option value="swift">Swift</option>
+                            </select>
+                            <div class="output" id="multiple-output">選択値: なし</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">検索機能なし</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="no-search-select" class="form-label">好きな色を選択してください:</label>
+                            <select id="no-search-select" class="form-control">
+                                <option value="">選択してください</option>
+                                <option value="red">赤</option>
+                                <option value="blue">青</option>
+                                <option value="green">緑</option>
+                                <option value="yellow">黄色</option>
+                                <option value="purple">紫</option>
+                                <option value="orange">オレンジ</option>
+                                <option value="pink">ピンク</option>
+                                <option value="black">黒</option>
+                                <option value="white">白</option>
+                                <option value="gray">グレー</option>
+                            </select>
+                            <div class="output" id="no-search-output">選択値: なし</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">標準HTML要素との比較</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="original-select" class="form-label">元のHTML select要素:</label>
+                            <select id="original-select" class="form-control">
+                                <option value="">選択してください</option>
+                                <option value="option1">オプション1</option>
+                                <option value="option2">オプション2</option>
+                                <option value="option3">オプション3</option>
+                                <option value="option4">オプション4</option>
+                                <option value="option5">オプション5</option>
+                            </select>
+                            <div class="output" id="original-output">選択値: なし</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">サイズバリエーション</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Small (.form-control-sm)</label>
+                            <select class="form-control form-control-sm size-demo-sm">
+                                <option value="">Small select</option>
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Default</label>
+                            <select class="form-control size-demo-default">
+                                <option value="">Default select</option>
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="form-label">Large (.form-control-lg)</label>
+                            <select class="form-control form-control-lg size-demo-lg">
+                                <option value="">Large select</option>
+                                <option value="1">Option 1</option>
+                                <option value="2">Option 2</option>
+                                <option value="3">Option 3</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="extend-select.js"></script>
+    <script>
+        // 基本的な単一選択
+        const basicSelect = new ExtendSelect(document.getElementById('basic-select'), {
+            searchable: true,
+            placeholder: '果物を選択してください...',
+            searchPlaceholder: '果物を検索...'
+        });
+
+        document.getElementById('basic-select').addEventListener('change', function() {
+            document.getElementById('basic-output').textContent = `選択値: ${this.value || 'なし'}`;
+        });
+
+        // 複数選択
+        const multipleSelect = new ExtendSelect(document.getElementById('multiple-select'), {
+            searchable: true,
+            multiple: true,
+            placeholder: 'プログラミング言語を選択してください...',
+            searchPlaceholder: '言語を検索...'
+        });
+
+        document.getElementById('multiple-select').addEventListener('change', function() {
+            const selected = Array.from(this.selectedOptions).map(option => option.value);
+            document.getElementById('multiple-output').textContent = `選択値: ${selected.length > 0 ? selected.join(', ') : 'なし'}`;
+        });
+
+        // 検索機能なし
+        const noSearchSelect = new ExtendSelect(document.getElementById('no-search-select'), {
+            searchable: false,
+            placeholder: '色を選択してください...'
+        });
+
+        document.getElementById('no-search-select').addEventListener('change', function() {
+            document.getElementById('no-search-output').textContent = `選択値: ${this.value || 'なし'}`;
+        });
+
+        // 元のselect要素（比較用）
+        document.getElementById('original-select').addEventListener('change', function() {
+            document.getElementById('original-output').textContent = `選択値: ${this.value || 'なし'}`;
+        });
+
+        // サイズデモ用のExtendSelect
+        const sizeSmall = new ExtendSelect(document.querySelector('.size-demo-sm'), {
+            searchable: true,
+            placeholder: 'Small size...'
+        });
+
+        const sizeDefault = new ExtendSelect(document.querySelector('.size-demo-default'), {
+            searchable: true,
+            placeholder: 'Default size...'
+        });
+
+        const sizeLarge = new ExtendSelect(document.querySelector('.size-demo-lg'), {
+            searchable: true,
+            placeholder: 'Large size...'
+        });
+
+        // デモ用の初期値設定
+        setTimeout(() => {
+            basicSelect.setValue('apple');
+            multipleSelect.setValue(['javascript', 'python']);
+            noSearchSelect.setValue('blue');
+        }, 500);
+    </script>
+</body>
+</html>
